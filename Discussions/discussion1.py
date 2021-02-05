@@ -1,3 +1,5 @@
+# Insertion Sort
+
 A = [5, 2, 8, 4, 6, 1, 3, 7]
 
 count = 0
