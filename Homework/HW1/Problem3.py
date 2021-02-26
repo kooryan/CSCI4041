@@ -39,4 +39,4 @@ List = [4, 5, 8, 2, 4, 7, 5, 0, 8, 2, 3, 9, 23, 48, -12, 49]
 
 # for i in range
 
-print(rand_select(List, 0, len(List)-1, 3))
+print(rand_select(List, 0, len(List)-1, 7))

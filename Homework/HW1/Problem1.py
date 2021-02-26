@@ -63,12 +63,12 @@ def ptree(A, i=0, indent=0):
 # file = open("input.txt", 'r')
 List = []
 
+
 Insert(List, ["Paul", 2])
 Insert(List, ["Alan", 5])
+print(Maximum(List))
 Insert(List, ["Sue", 999])
 Insert(List, ["Sally", 99])
-Insert(List, ["Sally", 4])
-Insert(List, ["Dan", 999])
 Extract_Max(List)
 print(Maximum(List))
 
