@@ -1,7 +1,7 @@
 # Dijkstra's algorithm
 
-import heapq
 import math
+
 
 def min_heapify(A, i):  # all of this follows the pseudo code from CLRS
     l = 2 * i
@@ -16,6 +16,7 @@ def min_heapify(A, i):  # all of this follows the pseudo code from CLRS
         A[i], A[smallest] = A[smallest], A[i]
         min_heapify(A, smallest)
 
+
 def Extract_Min(Q):  # all of this follows the pseudo code from CLRS
     if len(Q) < 1:
         print("heap underflow")
@@ -26,6 +27,7 @@ def Extract_Min(Q):  # all of this follows the pseudo code from CLRS
     Q.pop(len(Q) - 1)  # this is our A.heapsize = A.heapsize - 1, pop() removing the last element of the list
     min_heapify(Q, 0)
     return min
+
 
 def Decrease_Key(S, i, key):  # all of this follows the pseudo code from CLRS
     if key[0] > S[i]:  # we assume the new key is smaller than the current one
@@ -38,38 +40,54 @@ def Decrease_Key(S, i, key):  # all of this follows the pseudo code from CLRS
         S[i], S[math.floor(i / 2)] = S[math.floor(i / 2)], S[i]
         i = math.floor(i / 2)
 
+
 def Insert(S, key):
-    S.append(math.inf)  # because if we do just -math.inf we are trying to compare an array with a number, which we don't want
-    print(key)
+    S.append(math.inf)
     Decrease_Key(S, len(S) - 1, key)
 
-def dijkstra(g, s, t):
-    q = []
-    d = {k: math.inf for k in g}
-    p = {}
-    path = []
 
-    d[s] = 0
-    q.append((0, s))
+def dijkstra(G, s, t):  # implementation of Dijkstra in CLRS with some modifications -> we take in the graph, starting point, and end point, as opposed to graph, weight, and starting point
+    q = []  # creation of our Q
+    d = {k: math.inf for k in G}  # initialize single source, we set all the vertexes to edge distance infinity.
+    path = []  # initialize an array to store each of the vertexes we traverse to get to our end point
 
-    while q:
-        last_w, curr_v = Extract_Min(q)
-        for n, n_w in g[curr_v]:
-            cand_w = last_w + n_w
-            if cand_w < d[n]:
-                d[n] = cand_w
-                p[n] = curr_v
-                path.append(curr_v)
-                Insert(q, (cand_w, n))
+    d[s] = 0  # set the starting vertex to s.d = 0
+    q.append((0, s))  # adding G.V to Q
 
-    path.append(t)
-    final_path = list(dict.fromkeys(path))
-    print(final_path)
-  #  return str(d[t]) + ": " + path + str(t)
+    while q:  # our while Q not null
+        u, v = Extract_Min(q)  # here we split the u variable to take in the Extract_Min(Q)
+        for n, n_w in G[v]:  # Looping through each vertex in G taking in a tuple (node, weight)
+            if u + n_w < d[n]:  # Relaxation
+                d[n] = u + n_w  # Relaxation - calculating our path distance
+                path.append(v)  # add the vertex we just travelled to to our path list
+                Insert(q, (u + n_w, n))  # insertion to Q
+    path.append(t)  # adding our end node to the end of the path
 
-og = {}
-og["0"] = [("1", math.inf), ("2", 4)]
-og["1"] = [("0", 2), ("2", 7)]
-og["2"] = [("0", math.inf), ("1", 3)]
+    final_path = list(dict.fromkeys(path))  # formatting our path
+    string_constructor = ""
+    for i in final_path:  # converting our path list to a string to output
+        string_constructor = string_constructor + i + " "
+    return str(d[t]) + ": " + string_constructor  # our path distance
 
-print(dijkstra(og, "0", "1"))
+
+file = open("input.txt", 'r')
+output = open("output.txt", "w+")
+
+s, t = file.readline().split()
+matrix = {}
+
+i = 0
+for line in file:  # reading in the file
+    line = line.split()
+    temp_array = []
+    for j in range(len(line)):
+        if i != j:
+            temp_array.append((str(j), int(line[j])))  # taking in the vertex as a string and its weight as an int
+            matrix[str(i)] = temp_array # add it to our matrix of nodes
+    i += 1
+
+
+output.write(dijkstra(matrix, str(s), str(t)))
+
+output.close()
+

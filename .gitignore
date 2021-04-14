@@ -162,4 +162,4 @@ DerivedData/
 ## Gcc Patch
 /*.gcno
 
-!/Workpad/
+/Workpad/

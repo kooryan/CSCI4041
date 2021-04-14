@@ -16,4 +16,4 @@ for sublist in t:
     for item in sublist:
         flat_list.append(item)
 
-print(flat_list)
+print(2 > 2)
